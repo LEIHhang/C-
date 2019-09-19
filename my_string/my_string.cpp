@@ -1,13 +1,14 @@
 #include<iostream>
 #include<assert.h>
 #include<utility>
-
+#include<istream>
 typedef const char* const_iterator;
 typedef char* iterator;
 namespace lh
 {
 	class string
 	{
+		friend istream getline(istream& _cin,const string& s);
 	public:
 		//string()//默认构造函数
 		//	:_str (new char[1])
@@ -86,4 +87,8 @@ namespace lh
 		int _size;
 		int _capacity;
 	};
+	istream getline(istream&  _cin,const string& s)
+	{
+		
+	}
 }
