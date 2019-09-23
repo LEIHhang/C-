@@ -2,29 +2,69 @@
 #include<assert.h>
 #include<utility>
 #include<istream>
-typedef const char* const_iterator;
-typedef char* iterator;
+#include<string>
+using namespace std;
 namespace lh
 {
+
 	class string
 	{
-		friend istream getline(istream& _cin,const string& s);
+		typedef const char* const_iterator;
+		typedef char* iterator;
+		friend istream& getline(istream& _cin, const string& s);
 	public:
-		//string()//默认构造函数
-		//	:_str (new char[1])
-		//{
-		//	*_str = '\0';
-		//}
-		string(const char* s='\0')//默认构造函数
-			:_str(new char[strlen(s)+1])
+		string()//default默认
+			:_str(new char[1])
+		{
+			*_str = '\0';
+		}
+		string(const char* s = '\0')//from C string
+			:_str(new char[strlen(s) + 1])
 		{
 			strcpy(_str, s);
 			_size = strlen(s) + 1;
 			_capacity = _size;
 		}
+		string(const string& str, size_t pos, size_t len = npos)//substring 子串
+			:_str(new char[(str._size - pos + 1)<len ? str._size - pos + 1:len]),
+			_size((str._size - pos + 1)<len ? str._size - pos + 1 : len),
+			_capacity((str._size - pos + 1)<len ? str._size - pos + 1 : len)
+		{
+			char* newstart = str._str + pos;
+			strcpy(_str, newstart);
+		}
+		string(const char* str, size_t n)//from buffer从缓冲区
+			:_str(new char[n + 1]),
+			_size(n + 1),
+			_capacity(n + 1)
+		{
+			strncpy(_str, str, n);
+			_str[n] = '\0'; //strncpy空字符要手动添加
+		}
+		string(size_t n, char c)//fill 填充n个c
+			: _str(new char[n]),
+			_size(n),
+			_capacity(n)
+		{
+			while (n--)
+			{
+				_str[n - 1] = c;//从后往前填充
+			}
+		}
+		template<class InputIterator>
+		string(InputIterator begin, InputIterator last)//range 取范围
+			:_str(new char[last-begin+1]),
+			_size(last-begin+1),
+			_capacity(last-begin+1)
+		{
+			while (begin != last)
+			{
 
-		string(string& s)//拷贝构造函数
-			:_str(new char[strlen(s._str)+1]),
+			}
+		}
+		string(initializer_list<char> il);//initializer_list 初始化列表
+		string(const string& s)//copy拷贝构造函数
+			:_str(new char[strlen(s.c_str)]),
 			_size(s._size),
 			_capacity(s._capacity)
 		{
@@ -35,6 +75,15 @@ namespace lh
 		{
 			delete[] _str;
 			_size = _capacity = 0;
+		}
+		size_t size()
+		{
+			return _size;
+		}
+
+		const char* c_str() const
+		{
+			return _str;
 		}
 
 		void resever(int n)
@@ -48,7 +97,7 @@ namespace lh
 			_capacity = n;
 		}
 
-		string& operator=(string& s)
+		string& operator=(const string& s)
 		{
 			delete[] _str;
 			_str = new char[strlen(s._str) + 1];
@@ -59,7 +108,11 @@ namespace lh
 			return *this;
 		}
 
-		iterator& begin()
+		iterator begin() 
+		{
+			return _str;
+		}
+		const_iterator begin() const
 		{
 			return _str;
 		}
@@ -84,11 +137,10 @@ namespace lh
 
 	private:
 		char* _str;
-		int _size;
-		int _capacity;
+		int _size;//当前存储元素
+		int _capacity;//容量大小
+		static const size_t npos = -1;
+
 	};
-	istream getline(istream&  _cin,const string& s)
-	{
-		
-	}
+	//istream& getline(istream&  _cin,const string& s)
 }
