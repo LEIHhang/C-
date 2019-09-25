@@ -67,7 +67,7 @@ namespace lh
 		}
 		string(initializer_list<char> il);//initializer_list 初始化列表
 		string(const string& s)//copy拷贝构造函数
-			:_str(new char[strlen(s.c_str) + 1]),
+			:_str(new char[strlen(s.c_str()) + 1]),
 			_size(s._size),
 			_capacity(s._capacity)
 		{
@@ -92,21 +92,41 @@ namespace lh
 			return _str;
 		}
 
-		void rsize(size_t n)
+		//Resizes the string to a length of n characters.
+		//不会改变容量大小
+		void resize(size_t n)
 		{
-
+			size_t sz = this->size();
+			if (n < sz)
+			{
+				_size = n;
+				_str[_size] = '\0';
+			}
+			else
+			{
+				this->resever(n);
+			}
 		}
 
-		void rsize(size_t n, char c)
+		void resize(size_t n, char c)
 		{
+			size_t sz = this->size();
+			if (n < sz)
+			{
+				_size = n;
+				_str[_size] = '\0';
+			}
+			else
+			{
 
+			}
 		}
 
 		void resever(int n)
 		{
 			assert(n > _capacity);
 			//先申请空间
-			iterator tmp = new char[n];
+			iterator tmp = new char[n+1];
 			strcpy(tmp, _str);
 			delete[] _str;
 			_str = tmp;
@@ -162,19 +182,19 @@ namespace lh
 		}
 		char& back()//return the last character of string
 		{
-
+			return _str[_size - 1];
 		}
 		const char& back() const
 		{
-
+			return _str[_size - 1];
 		}
 		char& front()//return the first character of string
 		{
-
+			return _str[0];
 		}
 		const char& front() const
 		{
-
+			return _str[0];
 		}
 		string& operator+=(const string& str)
 		{
@@ -188,7 +208,7 @@ namespace lh
 		{
 
 		}
-		string&	append(const string& str)
+		string&	append(const string& str)//在末尾添加，并自动加上\0
 		{
 
 		}
@@ -206,12 +226,96 @@ namespace lh
 		}
 		string& append(size_t n, char c)
 		{
-
+			size_t newsize = n + _size;
+			while (newsize > _capacity)
+				this->resever(1.5*_capacity);//先扩容
+			while (n--)
+			{
+				*this += c;
+			}
 		}
 		void push_back(char c)
 		{
 
 		}
+		string& assign(const string& str)//重新分配内容
+		{
+
+		}
+		string& assign(const string& str, size_t subpos, size_t sublen) //subpos开始下标
+		{
+
+		}
+		string& assign(const char* s)
+		{
+
+		}
+		string& assign(const char* s, size_t n)
+		{
+
+		}
+		string& assign(size_t n, char c)
+		{
+
+		}
+		string& insert(size_t pos, const string& str)
+		{
+			assert(pos <= _size);
+			size_t sz = str.size();//待插入串长 也是需要移动的距离
+			//判断空间是否足够
+			while (sz + _size > _capacity)
+			{
+				this->resever(1.5*_capacity);
+			}
+			size_t move_len = _size - pos + 1;//需要移动元素个数(包括\0)
+			size_t temp_size = _size;//暂存_size
+			while (move_len--)
+			{
+				//从后向前挪动数据
+				_str[_size + sz] = _str[_size];
+				--_size;
+			}
+			//现在_size等于插入位置下标
+			strncpy(&_str[_size+1], str._str, sz);
+			_size = temp_size + sz;
+			return *this;
+		}
+		string& insert(size_t pos, const string& str, size_t subpos, size_t sublen)
+		{
+			string sl(str, subpos, sublen);
+			return insert(pos, sl);
+		}
+		string& insert(size_t pos, const char* s)
+		{
+			string sl(s);
+			return insert(pos, sl);
+		}
+		string& insert(size_t pos, const char* s, size_t n)
+		{
+			string sl(s, n);
+			return insert(pos, sl);
+		}
+		string& insert(size_t pos, size_t n, char c)
+		{
+			string sl(n, c);
+			return insert(pos, sl);
+		}
+		//Erases part of the string, reducing its length :
+		string& erase(size_t pos = 0, size_t len = npos)
+		{
+
+		}
+		iterator erase(const_iterator p)
+		{
+
+		}
+		iterator erase(const_iterator first, const_iterator last)
+		{
+
+		}
+		string& replace(size_t pos, size_t len, const string& str);
+		string& replace(const_iterator i1, const_iterator i2, const string& str);
+		string& replace(size_t pos, size_t len, const string& str, size_t subpos, size_t sublen);
 	private:
 		char* _str;
 		int _size;//当前存储元素
@@ -220,4 +324,15 @@ namespace lh
 
 	};
 	//istream& getline(istream&  _cin,const string& s)
+	void test1()
+	{
+		string s("abcdef");
+		string str("abc");
+		s.insert(4, str);
+		cout << s.c_str() << endl;
+	}
+}
+int main()
+{
+	lh::test1();
 }

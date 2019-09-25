@@ -1,15 +1,35 @@
-﻿生成启动时间为 2019/9/23 13:24:13。
+﻿生成启动时间为 2019/9/25 16:49:04。
      1>项目“C:\github上传代码\C++\my_string\my_string.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          E:\VS2013\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt my_string.cpp
          my_string.cpp
-     1>c:\github上传代码\c++\my_string\my_string.cpp(35): error C2061: 语法错误: 标识符“InputItera”
-     1>c:\github上传代码\c++\my_string\my_string.cpp(111): warning C4520: “lh::string”: 指定了多个默认构造函数
-     1>c:\github上传代码\c++\my_string\my_string.cpp(37): error C3867: “lh::string::c_str”:  函数调用缺少参数列表；请使用“&lh::string::c_str”创建指向成员的指针
-     1>c:\github上传代码\c++\my_string\my_string.cpp(98): warning C4018: “<”: 有符号/无符号不匹配
-     1>c:\github上传代码\c++\my_string\my_string.cpp(99): warning C4018: “<”: 有符号/无符号不匹配
-     1>已完成生成项目“C:\github上传代码\C++\my_string\my_string.vcxproj”(Build 个目标)的操作 - 失败。
+     1>c:\github上传代码\c++\my_string\my_string.cpp(321): warning C4520: “lh::string”: 指定了多个默认构造函数
+     1>c:\github上传代码\c++\my_string\my_string.cpp(28): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 e:\vs2013\vc\include\string.h(112) : 参见“strcpy”的声明
+     1>c:\github上传代码\c++\my_string\my_string.cpp(36): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 e:\vs2013\vc\include\string.h(112) : 参见“strcpy”的声明
+     1>c:\github上传代码\c++\my_string\my_string.cpp(43): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 e:\vs2013\vc\include\string.h(195) : 参见“strncpy”的声明
+     1>c:\github上传代码\c++\my_string\my_string.cpp(74): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 e:\vs2013\vc\include\string.h(112) : 参见“strcpy”的声明
+     1>c:\github上传代码\c++\my_string\my_string.cpp(130): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 e:\vs2013\vc\include\string.h(112) : 参见“strcpy”的声明
+     1>c:\github上传代码\c++\my_string\my_string.cpp(150): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 e:\vs2013\vc\include\string.h(112) : 参见“strcpy”的声明
+     1>c:\github上传代码\c++\my_string\my_string.cpp(177): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\github上传代码\c++\my_string\my_string.cpp(178): warning C4018: “<”: 有符号/无符号不匹配
+     1>c:\github上传代码\c++\my_string\my_string.cpp(230): warning C4018: “>”: 有符号/无符号不匹配
+     1>c:\github上传代码\c++\my_string\my_string.cpp(231): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>c:\github上传代码\c++\my_string\my_string.cpp(263): warning C4018: “<=”: 有符号/无符号不匹配
+     1>c:\github上传代码\c++\my_string\my_string.cpp(266): warning C4018: “>”: 有符号/无符号不匹配
+     1>c:\github上传代码\c++\my_string\my_string.cpp(268): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>c:\github上传代码\c++\my_string\my_string.cpp(279): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 e:\vs2013\vc\include\string.h(195) : 参见“strncpy”的声明
+       Link:
+         E:\VS2013\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\github上传代码\C++\my_string\Debug\my_string.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\github上传代码\C++\my_string\Debug\my_string.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\github上传代码\C++\my_string\Debug\my_string.lib" /MACHINE:X86 Debug\my_string.obj
+         my_string.vcxproj -> C:\github上传代码\C++\my_string\Debug\my_string.exe
+     1>已完成生成项目“C:\github上传代码\C++\my_string\my_string.vcxproj”(Build 个目标)的操作。
 
-生成失败。
+生成成功。
 
-已用时间 00:00:00.32
+已用时间 00:00:00.72
