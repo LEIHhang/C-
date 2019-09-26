@@ -6,7 +6,6 @@
 using namespace std;
 namespace lh
 {
-
 	class string
 	{
 		typedef const char* const_iterator;
@@ -93,7 +92,6 @@ namespace lh
 		}
 
 		//Resizes the string to a length of n characters.
-		//不会改变容量大小
 		void resize(size_t n)
 		{
 			size_t sz = this->size();
@@ -118,7 +116,7 @@ namespace lh
 			}
 			else
 			{
-
+				this->append(n - _size, c);//后面添加
 			}
 		}
 
@@ -135,13 +133,13 @@ namespace lh
 
 		void clear()
 		{
-
+			_size = 0;
 		}
 
 		bool empty() const
 		{
-
-		}
+			return _size;
+		} 
 
 		string& operator=(const string& s)
 		{
@@ -198,65 +196,69 @@ namespace lh
 		}
 		string& operator+=(const string& str)
 		{
-
+			return append(str);
 		}
 		string& operator+=(const char* s)
 		{
-
+			return append(s);
 		}
 		string& operator+=(char c)
 		{
-
+			return append(1, c);
 		}
 		string&	append(const string& str)//在末尾添加，并自动加上\0
 		{
-
+			return insert(_size, str);
 		}
 		string& append(const string& str, size_t subpos, size_t sublen)
 		{
-
+			return insert(_size, str, subpos, sublen);
 		}
 		string& append(const char* s)
 		{
-
+			return insert(_size, s);
 		}
 		string& append(const char* s, size_t n)
 		{
-
+			return insert(_size, s, n);
 		}
 		string& append(size_t n, char c)
 		{
-			size_t newsize = n + _size;
-			while (newsize > _capacity)
-				this->resever(1.5*_capacity);//先扩容
-			while (n--)
-			{
-				*this += c;
-			}
+			return insert(_size, n, c);
 		}
 		void push_back(char c)
 		{
-
+			insert(_size, 1, c);
 		}
 		string& assign(const string& str)//重新分配内容
 		{
-
+			_size = 0;
+			_str[_size] = '\0';//为了实习Insert函数复用，所以将第一个元素设置为\0
+			return this->insert(0, str);
 		}
 		string& assign(const string& str, size_t subpos, size_t sublen) //subpos开始下标
 		{
-
+			_size = 0;
+			_str[_size] = '\0';
+			return this->insert(0, str, subpos, sublen);
 		}
 		string& assign(const char* s)
 		{
-
+			_size = 0;
+			_str[_size] = '\0';
+			return this->insert(0, s);
 		}
 		string& assign(const char* s, size_t n)
 		{
-
+			_size = 0;
+			_str[_size] = '\0';
+			return this->insert(0, s, n);
 		}
 		string& assign(size_t n, char c)
 		{
-
+			_size = 0;
+			_str[_size] = '\0';
+			return this->insert(0, n, c);
 		}
 		string& insert(size_t pos, const string& str)
 		{
@@ -303,11 +305,32 @@ namespace lh
 		//Erases part of the string, reducing its length :
 		string& erase(size_t pos = 0, size_t len = npos)
 		{
-
+			assert(pos < _size);
+			if (len == npos || pos+len>_size)
+			{
+				_str[pos] = '\0';
+				_size = pos;
+				return *this;
+			}
+			else
+			{
+				size_t start = pos + len;//需要删除串的后面串的开始位置
+				_size = pos;
+				while (_str[start] != '0')
+				{
+					_str[_size] = _str[start];
+					_size++;
+					start++;
+				}
+				_str[_size] = '\0';
+			}
 		}
-		iterator erase(const_iterator p)
+		iterator erase(const_iterator p)//删除指向的字符
 		{
-
+			while (*p != '\0')
+			{
+				*p = *(p + 1);
+			}
 		}
 		iterator erase(const_iterator first, const_iterator last)
 		{
