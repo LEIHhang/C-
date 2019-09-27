@@ -163,12 +163,11 @@ namespace lh
 
 		iterator end()
 		{
-			char* end = _str;
-			while (end != '\0')
-			{
-				++end;
-			}
-			return end;
+			return _str + _size;
+		}
+		const_iterator end() const
+		{
+			return _str + _size;
 		}
 		char& operator[](size_t pos)
 		{
@@ -325,20 +324,81 @@ namespace lh
 				_str[_size] = '\0';
 			}
 		}
-		iterator erase(const_iterator p)//删除指向的字符
+		iterator erase(const_iterator p)//删除指向的字符，返回指向删除元素紧跟位置的迭代器
 		{
-			while (*p != '\0')
+			if (*p != '\0')
 			{
-				*p = *(p + 1);
+				iterator i = (iterator)p;
+				copy(i+1, end() , p);
+				--_size;
+				return i;
 			}
 		}
 		iterator erase(const_iterator first, const_iterator last)
 		{
-
+			if (*last != '\0')
+			{
+				copy((iterator)last + 1, end(), first);
+				_size = _size - (last - first);
+				return (iterator)first;
+			}
 		}
 		string& replace(size_t pos, size_t len, const string& str);
 		string& replace(const_iterator i1, const_iterator i2, const string& str);
 		string& replace(size_t pos, size_t len, const string& str, size_t subpos, size_t sublen);
+		size_t find(string& s, size_t pos)
+		{
+			//字符串匹配问题
+			assert(_size - pos > s.size());
+			
+			while (_str[pos] != '\0')
+			{
+				int j = 0;
+				int i = pos;
+				while (_str[i] == s._str[j])
+				{
+					++i;
+					++j;
+					if (s._str[j] == '\0')
+						return pos;
+				}
+				pos = i;
+			}
+		}
+		size_t find(char* s, size_t pos)
+		{
+			while (_str[pos] != '\0')
+			{
+				int j = 0;
+				int i = pos;
+				while (_str[i] == s[j])
+				{
+					++i;
+					++j;
+					if (s[j] == '\0')
+						return pos;
+				}
+				pos = i;
+			}
+		}
+		size_t find(char* s, size_t pos, size_t n)
+		{
+			while (_str[pos] != '\0')
+			{
+				int j = 0;
+				int i = pos;
+				int k = n;
+				while (_str[i] == s[j])
+				{
+					++i;
+					++j;
+					--k;
+					if (k==0)
+						return pos;
+				}
+				pos = i;
+			}
+		}
 	private:
 		char* _str;
 		int _size;//当前存储元素
