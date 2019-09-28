@@ -343,7 +343,23 @@ namespace lh
 				return (iterator)first;
 			}
 		}
-		string& replace(size_t pos, size_t len, const string& str);
+
+		//replace portion of string
+		string& replace(size_t pos, size_t len, const string& str)
+		{
+			assert(pos + len <= str.size());
+			for (int i = 0; i < len; i++)
+			{
+				if (pos >= _capacity)
+					resever(1.5*_capacity);
+				_str[pos++] = str._str[i];
+			}
+			if (_str[pos] != '\0'&&pos > _size)
+			{
+				_str[pos] = '\0';
+				_size = pos;
+			}
+		}
 		string& replace(const_iterator i1, const_iterator i2, const string& str);
 		string& replace(size_t pos, size_t len, const string& str, size_t subpos, size_t sublen);
 		size_t find(string& s, size_t pos)
