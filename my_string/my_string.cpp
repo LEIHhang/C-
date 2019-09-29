@@ -8,9 +8,11 @@ namespace lh
 {
 	class string
 	{
+
 		typedef const char* const_iterator;
 		typedef char* iterator;
 		friend istream& getline(istream& _cin, const string& s);
+		friend string operator+(const string& lhs, const string& rhs);
 	public:
 		//在构造函数中，_size和capacity都设置成实际存储有效字符的个数（除去了\0）
 		//但在后面的成员函数中，若将_size和用作下标则表示指向\0这个字符，因为第一个元素下标为0
