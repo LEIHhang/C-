@@ -53,18 +53,6 @@ namespace lh
 			}
 			_str[n] = '\0';
 		}
-		template<class InputIterator>
-		string(InputIterator begin, InputIterator last)//range 取范围
-			:_str(new char[last-begin+1]),
-			_size(last-begin),
-			_capacity(last-begin)
-		{
-			while (begin != last)
-			{
-
-			}
-		}
-		string(initializer_list<char> il);//initializer_list 初始化列表
 		string(const string& s)//copy拷贝构造函数
 			:_str(new char[strlen(s.c_str()) + 1]),
 			_size(s._size),
@@ -345,23 +333,22 @@ namespace lh
 		}
 
 		//replace portion of string
+		//if the string is shorter,as many characters as possible are replaced
 		string& replace(size_t pos, size_t len, const string& str)
 		{
-			assert(pos + len <= str.size());
+			assert(pos < str.size()); 
 			for (int i = 0; i < len; i++)
 			{
 				if (pos >= _capacity)
 					resever(1.5*_capacity);
 				_str[pos++] = str._str[i];
 			}
-			if (_str[pos] != '\0'&&pos > _size)
+			if (pos > _size)
 			{
-				_str[pos] = '\0';
 				_size = pos;
+				_str[pos] = '\0';
 			}
 		}
-		string& replace(const_iterator i1, const_iterator i2, const string& str);
-		string& replace(size_t pos, size_t len, const string& str, size_t subpos, size_t sublen);
 		size_t find(string& s, size_t pos)
 		{
 			//字符串匹配问题
@@ -430,8 +417,4 @@ namespace lh
 		s.insert(4, str);
 		cout << s.c_str() << endl;
 	}
-}
-int main()
-{
-	lh::test1();
 }
