@@ -27,8 +27,85 @@ namespace lh
 				push_back(value);
 			}
 		}
+		template<class InputIterator>
+		vector(InputIterator first, InputIterator last)
+		{
+			reserve(last - first);
+			while (first != last)
+			{
+				push_back(*firat);
+				++first;
+			}
+		}
 		vector(const vector<T> x)
-			:
+			:start(nullptr),
+			finish(nullptr),
+			end_of_storage(nullptr)
+		{
+			reserver(x.capacity());
+			iterator xit = x.begin();
+			iterator it = begin();
+			while (xit != x.end())
+			{
+				*it++ = *xit++;
+			}
+			finish = start + x.size();
+			end_of_storage = start + x.capacity();
+		}
+		//destruct
+		~vector()
+		{
+			delete[] start;
+			start = finish = end_of_storage = nullptr;
+		}
+		//operator =
+		vector& operator=(const vector& x)
+		{
+			reserver(x.capacity());
+			iterator xit = x.begin();
+			iterator it = begin();
+			while (xit != x.end())
+			{
+				*it++ = *xit++;
+			}
+			finish = start + x.size();
+			end_of_storage = start + x.capacity();
+		}
+	public:
+		//Iterator
+		begin();
+		end();
+		rbegin();
+		rend();
+		cbegin();
+		cend();
+		crbegin();
+		crend();
+		//capacity
+		size();
+		max_size();
+		resize();
+		capacity();
+		empty();
+		reserve();
+		shrink_to_fit();
+		//element access
+		operator[]();
+		at();
+		front();
+		back();
+		date();
+		//modifers
+		assign();
+		push_back();
+		pop_back();
+		insert();
+		erase();
+		swap();
+		clear();
+		emplace();
+		emplace_back();
+
 
 
 	private:
