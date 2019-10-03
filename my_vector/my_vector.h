@@ -73,7 +73,14 @@ namespace lh
 		}
 	public:
 		//Iterator
-		begin();
+		iterator begin()
+		{
+			return start;
+		}
+		const_iterator begin() const
+		{
+			return start;
+		}
 		end();
 		rbegin();
 		rend();
