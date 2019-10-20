@@ -81,9 +81,22 @@ namespace lh
 		{
 			return start;
 		}
-		end();
-		rbegin();
-		rend();
+		iterator end()
+		{
+			return finish;
+		}
+		const_iterator end()
+		{
+			return finish;
+		}
+		iterator rbegin()
+		{
+			return finishi - 1;
+		}
+		iterator rend()
+		{
+			return start - 1;
+		}
 		cbegin();
 		cend();
 		crbegin();
@@ -94,7 +107,26 @@ namespace lh
 		resize();
 		capacity();
 		empty();
-		reserve();
+		void reserve(size_t n)
+		{
+			//1、开辟新的空间
+			int newn = n*1.5;
+			T* arr=new T[newn];
+			//2、拷贝数据
+			T* first = start;
+			int i = 0;
+			while (first != finish)
+			{
+				arr[i++] = *(first++);
+			}
+
+			//3、释放旧空间
+			delete start;
+			//4、更新信息
+			start = arr;
+			finish = arr + i;
+			end_of_storage = arr + newn;
+		}
 		shrink_to_fit();
 		//element access
 		operator[]();
