@@ -3,6 +3,7 @@
 #include<utility>
 #include<istream>
 #include<string>
+#include<stdint.h>
 using namespace std;
 namespace lh
 {
@@ -13,14 +14,18 @@ namespace lh
 		typedef char* iterator;
 		friend istream& getline(istream& _cin, const string& s);
 		friend string operator+(const string& lhs, const string& rhs);
+		friend string operator>>(istream& _in, const string& s);
+		//friend string operator<<(ostream& _out);
 	public:
 		//在构造函数中，_size和capacity都设置成实际存储有效字符的个数（除去了\0）
 		//但在后面的成员函数中，若将_size和用作下标则表示指向\0这个字符，因为第一个元素下标为0
-		string()//default默认
-			:_str(new char[1])
-		{
-			*_str = '\0';
-		}
+		//string()//default默认
+		//	:_str(new char[1])
+		//{
+		//	*_str = '\0';
+		//}
+		
+		//默认构造
 		string(const char* s = '\0')//from C string
 			:_str(new char[strlen(s) + 1]),
 			_size(strlen(s)),
@@ -34,7 +39,12 @@ namespace lh
 			_capacity((str._size - pos)<len ? str._size - pos : len)
 		{
 			char* newstart = str._str + pos;
-			strcpy(_str, newstart);
+			if (len==npos)
+				strcpy(_str, newstart);
+			else
+			{
+				strncpy(_str, newstart, len);
+			}
 		}
 		string(const char* str, size_t n)//from buffer从缓冲区
 			:_str(new char[n + 1]),
@@ -49,9 +59,9 @@ namespace lh
 			_size(n),
 			_capacity(n)
 		{
-			while (n--)
+			for (int i = 0; i < n;i++)
 			{
-				_str[n - 1] = c;//从后往前填充
+				_str[i] = c;
 			}
 			_str[n] = '\0';
 		}
@@ -62,12 +72,41 @@ namespace lh
 		{
 			strcpy(_str, s._str);
 		}
+		string& operator=(const string& s)
+		{
+			delete[] _str;
+			_str = new char[strlen(s._str) + 1];
+			strcpy(_str, s._str);
+			_size = s._size;
+			_capacity = s._capacity;
 
+			return *this;
+		}
 		~string()
 		{
 			delete[] _str;
 			_size = _capacity = 0;
 		}
+
+		//迭代器
+		iterator begin()//迭代器
+		{
+			return _str;
+		}
+		const_iterator begin() const
+		{
+			return _str;
+		}
+		iterator end()
+		{
+			return _str + _size;
+		}
+		const_iterator end() const
+		{
+			return _str + _size;
+		}
+
+		//容器
 		size_t size() const
 		{
 			return _size;
@@ -76,11 +115,6 @@ namespace lh
 		{
 			return _capacity;
 		}
-		const char* c_str() const
-		{
-			return _str;
-		}
-
 		//Resizes the string to a length of n characters.
 		void resize(size_t n)
 		{
@@ -93,9 +127,9 @@ namespace lh
 			else
 			{
 				this->resever(n);
+				_size = n;
 			}
 		}
-
 		void resize(size_t n, char c)
 		{
 			size_t sz = this->size();
@@ -109,21 +143,23 @@ namespace lh
 				this->append(n - _size, c);//后面添加
 			}
 		}
-
 		void resever(int n)
 		{
-			assert(n > _capacity);
-			//先申请空间
-			iterator tmp = new char[n+1];
-			strcpy(tmp, _str);
-			delete[] _str;
-			_str = tmp;
-			_capacity = n;
+			if (n > _capacity)
+				
+			{
+				iterator tmp = new char[n + 1];//先申请空间
+				strcpy(tmp, _str);
+				delete[] _str;
+				_str = tmp;
+				_capacity = n;
+			}
 		}
 
 		void clear()
 		{
 			_size = 0;
+			_str[_size] = '\0';
 		}
 
 		bool empty() const
@@ -131,34 +167,9 @@ namespace lh
 			return _size;
 		} 
 
-		string& operator=(const string& s)
-		{
-			delete[] _str;
-			_str = new char[strlen(s._str) + 1];
-			strcpy(_str, s._str);
-			_size = s._size;
-			_capacity = s._capacity;
-			
-			return *this;
-		}
 
-		iterator begin() 
-		{
-			return _str;
-		}
-		const_iterator begin() const
-		{
-			return _str;
-		}
 
-		iterator end()
-		{
-			return _str + _size;
-		}
-		const_iterator end() const
-		{
-			return _str + _size;
-		}
+		//元素访问
 		char& operator[](size_t pos)
 		{
 			assert(pos < _size);
@@ -183,6 +194,8 @@ namespace lh
 		{
 			return _str[0];
 		}
+
+		//修改器
 		string& operator+=(const string& str)
 		{
 			return append(str);
@@ -222,7 +235,7 @@ namespace lh
 		string& assign(const string& str)//重新分配内容
 		{
 			_size = 0;
-			_str[_size] = '\0';//为了实习Insert函数复用，所以将第一个元素设置为\0
+			_str[_size] = '\0';//为了实现Insert函数复用，所以将第一个元素设置为\0
 			return this->insert(0, str);
 		}
 		string& assign(const string& str, size_t subpos, size_t sublen) //subpos开始下标
@@ -314,25 +327,26 @@ namespace lh
 				_str[_size] = '\0';
 			}
 		}
-		iterator erase(const_iterator p)//删除指向的字符，返回指向删除元素紧跟位置的迭代器
+		iterator erase(iterator p)//删除指向的字符，返回指向删除元素紧跟位置的迭代器
 		{
 			if (*p != '\0')
 			{
-				iterator i = (iterator)p;
-				copy(i+1, end() , p);
+				iterator i = p;
+				//copy(i+1, end() , p);
+				strcpy(p, p + 1);
 				--_size;
 				return i;
 			}
 		}
-		iterator erase(const_iterator first, const_iterator last)
-		{
-			if (*last != '\0')
-			{
-				copy((iterator)last + 1, end(), first);
-				_size = _size - (last - first);
-				return (iterator)first;
-			}
-		}
+		//iterator erase(iterator first, iterator last)
+		//{
+		//	if (*last != '\0')
+		//	{
+		//		copy((iterator)last + 1, end(), first);
+		//		_size = _size - (last - first);
+		//		return (iterator)first;
+		//	}
+		//}
 
 		//replace portion of string
 		//if the string is shorter,as many characters as possible are replaced
@@ -350,6 +364,12 @@ namespace lh
 				_size = pos;
 				_str[pos] = '\0';
 			}
+		}
+
+
+		const char* c_str() const
+		{
+			return _str;
 		}
 		size_t find(string& s, size_t pos)
 		{
@@ -370,6 +390,7 @@ namespace lh
 				pos = i;
 			}
 		}
+
 		size_t find(char* s, size_t pos)
 		{
 			while (_str[pos] != '\0')
@@ -406,7 +427,7 @@ namespace lh
 		}
 	private:
 		char* _str;
-		int _size;//当前存储元素
+		int _size;//当前存储元素量
 		int _capacity;//容量大小
 		static const size_t npos = -1;
 
@@ -415,8 +436,36 @@ namespace lh
 	void test1()
 	{
 		string s("abcdef");
-		string str("abc");
-		s.insert(4, str);
+		string str("ghinm");
+		char* arr = "woaini";
+
+		s.assign(arr);
+		cout << s.size() << endl;
+		cout << s.capacity() << endl;
 		cout << s.c_str() << endl;
+
+		s.erase(arr);
+		cout << s.c_str() << endl;
+
+		//s.resize(15,'a');
+		//cout << s.c_str() << endl;
+		//s[0] = 'b';
+		//cout << s[0] << endl;
+
+		//string s1(5, 'a');
+		//cout << s1.c_str() << endl;
+
+
+
+
+
+
 	}
+
+}
+using namespace lh;
+int main()
+{
+	test1();
+	return 0;
 }
