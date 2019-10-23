@@ -327,29 +327,6 @@ namespace lh
 				_str[_size] = '\0';
 			}
 		}
-		iterator erase(iterator p)//删除指向的字符，返回指向删除元素紧跟位置的迭代器
-		{
-			if (*p != '\0')
-			{
-				iterator i = p;
-				//copy(i+1, end() , p);
-				strcpy(p, p + 1);
-				--_size;
-				return i;
-			}
-		}
-		//iterator erase(iterator first, iterator last)
-		//{
-		//	if (*last != '\0')
-		//	{
-		//		copy((iterator)last + 1, end(), first);
-		//		_size = _size - (last - first);
-		//		return (iterator)first;
-		//	}
-		//}
-
-		//replace portion of string
-		//if the string is shorter,as many characters as possible are replaced
 		string& replace(size_t pos, size_t len, const string& str)
 		{
 			assert(pos < str.size()); 
@@ -365,7 +342,6 @@ namespace lh
 				_str[pos] = '\0';
 			}
 		}
-
 
 		const char* c_str() const
 		{
@@ -444,22 +420,12 @@ namespace lh
 		cout << s.capacity() << endl;
 		cout << s.c_str() << endl;
 
-		s.erase(arr);
-		cout << s.c_str() << endl;
-
 		//s.resize(15,'a');
 		//cout << s.c_str() << endl;
 		//s[0] = 'b';
 		//cout << s[0] << endl;
-
 		//string s1(5, 'a');
 		//cout << s1.c_str() << endl;
-
-
-
-
-
-
 	}
 
 }
