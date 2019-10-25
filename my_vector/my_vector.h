@@ -1,4 +1,5 @@
 #include<iostream>
+#include<assert.h>
 using namespace std;
 namespace lh
 {
@@ -9,7 +10,6 @@ namespace lh
 		typedef const T* const_iterator;
 	public:
 		//member function
-
 		//construct
 		explicit vector()
 			:start(nullptr),
@@ -27,6 +27,7 @@ namespace lh
 				push_back(value);
 			}
 		}
+
 		template<class InputIterator>
 		vector(InputIterator first, InputIterator last)
 		{
@@ -37,6 +38,7 @@ namespace lh
 				++first;
 			}
 		}
+
 		vector(const vector<T> x)
 			:start(nullptr),
 			finish(nullptr),
@@ -70,6 +72,7 @@ namespace lh
 			}
 			finish = start + x.size();
 			end_of_storage = start + x.capacity();
+			return *this;
 		}
 	public:
 		//Iterator
@@ -97,16 +100,20 @@ namespace lh
 		{
 			return start - 1;
 		}
-		cbegin();
-		cend();
-		crbegin();
-		crend();
+
 		//capacity
-		size();
-		max_size();
-		resize();
-		capacity();
-		empty();
+		size_t size() const
+		{
+			return finish - start;
+		}
+		size_t capacity() const
+		{
+			return capacity - start;
+		}
+		bool empty() const
+		{
+			return finish == start;
+		}
 		void reserve(size_t n)
 		{
 			//1、开辟新的空间
@@ -127,25 +134,59 @@ namespace lh
 			finish = arr + i;
 			end_of_storage = arr + newn;
 		}
-		shrink_to_fit();
-		//element access
-		operator[]();
-		at();
-		front();
-		back();
-		date();
+		T operator[](size_t n)
+		{
+			assert(n < (finish - start));
+			return *(start + n);
+		}
+		T front()
+		{
+			if (!empty())
+				return *start;
+		}
+		T back()
+		{
+			if (!empty())
+				return *finish;
+		}
 		//modifers
-		assign();
-		push_back();
-		pop_back();
-		insert();
-		erase();
-		swap();
-		clear();
-		emplace();
-		emplace_back();
-
-
+		void push_back(const T& x)
+		{
+			*finish = x;
+			finish++;
+		}
+		pop_back()
+		{
+			finish--;
+		}
+		iterator insert(iterator pos,const T& val)//before insert
+		{
+			iterator it = end();
+			while (it != pos)//从后往前，前一个覆盖下一个位置
+			{
+				*it = *(it - 1);
+				--it;
+			}
+			*it = val;
+			finish++;
+			return it;
+		}
+		iterator erase(iterator pos)
+		{
+			iterator it = pos;
+			while (it != end())
+			{
+				*it = *(it + 1);
+				++it;
+			}
+			--finish;
+			return pos;
+		}
+		//swap();
+		void clear()
+		{
+			finish = start;
+		}
 
 	private:
 		iterator start;//有效数据起始位置
