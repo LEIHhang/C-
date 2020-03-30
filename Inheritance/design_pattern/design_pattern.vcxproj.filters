@@ -18,5 +18,8 @@
     <ClCompile Include="composite_pattern.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="handle_body.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
