@@ -56,7 +56,7 @@ private:
 	int _So;
 };
 
-Son::Son()
+Son::Son() 
 {
 	cout << "Son construct.." << endl;
 	_So = 1;
