@@ -21,5 +21,8 @@
     <ClCompile Include="test_costr_destr_sequence.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="conclusion.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
