@@ -1,2 +1,0 @@
-C:\github\C++\c++11\c++11\Debug\c++11.exe
-C:\github\C++\c++11\c++11\Debug\c++11.pdb
