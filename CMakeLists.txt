@@ -11,4 +11,7 @@ add_executable(asyncTest ${SOURCES})
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/build_cache) 
+
+add_executable(threadTest c++11/src/thread1.cc)
 #
+add_executable(promiseTest c++11/src/promise1.cc)
